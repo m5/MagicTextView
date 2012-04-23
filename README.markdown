@@ -26,25 +26,25 @@ Usage
 
 From Xml:
 
-   <com.qwerjk.better_text.MagicTextView
-       android:textSize="78dp"
-       android:textColor="#ff333333"
-       android:layout_width="fill_parent"
-       android:layout_height="wrap_content"
-       android:drawableLeft="@android:drawable/btn_star"
-       android:textStyle="bold"
-       android:padding="10dp"
-       qwerjk:foreground="@drawable/fake_luxury_tiled"
-       qwerjk:innerShadowDy="2"
-       qwerjk:innerShadowColor="#FF000000"
-       qwerjk:innerShadowRadius="1"
-       qwerjk:outerShadowDy="3"
-       qwerjk:outerShadowColor="#FF0088ff"
-       qwerjk:outerShadowRadius="10"
-       qwerjk:strokeColor="#FFff0000"
-       qwerjk:strokeJoinStyle="miter"
-       qwerjk:strokeWidth="5"
-       android:text="Magic" />
+    <com.qwerjk.better_text.MagicTextView
+        android:textSize="78dp"
+        android:textColor="#ff333333"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@android:drawable/btn_star"
+        android:textStyle="bold"
+        android:padding="10dp"
+        qwerjk:foreground="@drawable/fake_luxury_tiled"
+        qwerjk:innerShadowDy="2"
+        qwerjk:innerShadowColor="#FF000000"
+        qwerjk:innerShadowRadius="1"
+        qwerjk:outerShadowDy="3"
+        qwerjk:outerShadowColor="#FF0088ff"
+        qwerjk:outerShadowRadius="10"
+        qwerjk:strokeColor="#FFff0000"
+        qwerjk:strokeJoinStyle="miter"
+        qwerjk:strokeWidth="5"
+        android:text="Magic" />
 
 From Java:
 
