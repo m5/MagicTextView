@@ -12,6 +12,7 @@ import android.graphics.Paint.Join;
 import android.graphics.Paint.Style;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
+import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
@@ -27,14 +28,16 @@ public class MagicTextView extends TextView {
 	private Canvas tempCanvas;
 	private Bitmap tempBitmap;
 	
-	private int[] lockedCompoundPadding;
-	private boolean compoundPaddingLocked;
+
 	private Drawable foregroundDrawable;
 	
 	private float strokeWidth;
 	private Integer strokeColor;
 	private Join strokeJoin;
 	private float strokeMiter;
+	
+	private int[] lockedCompoundPadding;
+	private boolean frozen = false;
 
 	public MagicTextView(Context context) {
 		super(context);
@@ -145,18 +148,19 @@ public class MagicTextView extends TextView {
 	public Drawable getForeground(){
 		return this.foregroundDrawable == null ? this.foregroundDrawable : new ColorDrawable(this.getCurrentTextColor());
 	}
+
 	
 	@Override
 	public void onDraw(Canvas canvas){
 		super.onDraw(canvas);
 		
+		freeze();
 		Drawable restoreBackground = this.getBackground();
 		Drawable[] restoreDrawables = this.getCompoundDrawables();
 		int restoreColor = this.getCurrentTextColor();
 
-		this.lockCompoundPadding();
 		this.setCompoundDrawables(null,  null, null, null);
-		
+
 
 		
 		this.setTextColor(0x00000000);
@@ -168,7 +172,7 @@ public class MagicTextView extends TextView {
 		this.setTextColor(restoreColor);
 		
 		if(this.foregroundDrawable != null && this.foregroundDrawable instanceof BitmapDrawable){
-			generateTempCanvas(canvas);
+			generateTempCanvas();
 			super.onDraw(tempCanvas);
 			Paint paint = ((BitmapDrawable) this.foregroundDrawable).getPaint();
 			paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_ATOP));
@@ -190,7 +194,7 @@ public class MagicTextView extends TextView {
 			this.setTextColor(restoreColor);
 		}
 		if(innerShadows.size() > 0){
-			generateTempCanvas(canvas);
+			generateTempCanvas();
 			TextPaint paint = this.getPaint();
 			for(Shadow shadow : innerShadows){
 				this.setTextColor(shadow.color);
@@ -213,52 +217,74 @@ public class MagicTextView extends TextView {
 		}
 		this.setBackgroundDrawable(restoreBackground);
 		this.setTextColor(restoreColor);
-	}
-	
-	public void generateTempCanvas(Canvas canvas){
-		if(tempCanvas == null
-        || tempCanvas.getWidth() != canvas.getWidth()
-        || tempCanvas.getHeight() != canvas.getHeight()
-        ){
-			tempCanvas = new Canvas();
-			tempBitmap = Bitmap.createBitmap(canvas.getWidth(), canvas.getHeight(), Bitmap.Config.ARGB_8888);
-			tempCanvas.setBitmap(tempBitmap);
+		tempCanvas = null;
+		if(tempBitmap != null){
+			tempBitmap.recycle();
 		}
+		tempBitmap = null;
+		unfreeze();
 	}
 	
+	private void generateTempCanvas(){
+		tempCanvas = new Canvas();
+		tempBitmap = Bitmap.createBitmap(getWidth(), getHeight(), Bitmap.Config.ARGB_8888);
+		tempCanvas.setBitmap(tempBitmap);
+	}
+
 	
-	public void lockCompoundPadding(){
+	// Keep these things locked while onDraw in processing
+	public void freeze(){
 		lockedCompoundPadding = new int[]{
 				getCompoundPaddingLeft(),
 				getCompoundPaddingRight(),
 				getCompoundPaddingTop(),
 				getCompoundPaddingBottom()
 		};
-		compoundPaddingLocked = true;
+		frozen = true;
 	}
 	
-	public void unlockCompoundPadding(){
-		compoundPaddingLocked = false;
+	public void unfreeze(){
+		frozen = false;
+	}
+	
+	@Override
+	public void postInvalidate(){
+		if(!frozen) super.postInvalidate();
+	}
+	
+	@Override
+	public void invalidate(){
+		if(!frozen)	super.invalidate();
+	}
+	
+	@Override
+	public void invalidate(Rect rect){
+		if(!frozen) super.invalidate(rect);
+	}
+	
+	@Override
+	public void invalidate(int l, int t, int r, int b){
+		if(!frozen) super.invalidate(l,t,r,b);
 	}
 	
 	@Override
 	public int getCompoundPaddingLeft(){
-		return !compoundPaddingLocked ? super.getCompoundPaddingLeft() : lockedCompoundPadding[0];
+		return !frozen ? super.getCompoundPaddingLeft() : lockedCompoundPadding[0];
 	}
 	
 	@Override
 	public int getCompoundPaddingRight(){
-		return !compoundPaddingLocked ? super.getCompoundPaddingRight() : lockedCompoundPadding[1];
+		return !frozen ? super.getCompoundPaddingRight() : lockedCompoundPadding[1];
 	}
 	
 	@Override
 	public int getCompoundPaddingTop(){
-		return !compoundPaddingLocked ? super.getCompoundPaddingTop() : lockedCompoundPadding[2];
+		return !frozen ? super.getCompoundPaddingTop() : lockedCompoundPadding[2];
 	}
 	
 	@Override
 	public int getCompoundPaddingBottom(){
-		return !compoundPaddingLocked ? super.getCompoundPaddingBottom() : lockedCompoundPadding[3];
+		return !frozen ? super.getCompoundPaddingBottom() : lockedCompoundPadding[3];
 	}
 	
 	public static class Shadow{
