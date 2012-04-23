@@ -27,6 +27,7 @@ Usage
 From Xml:
 
     <com.qwerjk.better_text.MagicTextView
+        xmlns:qwerjk="http://schemas.android.com/apk/res/com.qwerjk.better_text"
         android:textSize="78dp"
         android:textColor="#ff333333"
         android:layout_width="fill_parent"
