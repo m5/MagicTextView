@@ -163,7 +163,6 @@ public class MagicTextView extends TextView {
 
 
 		
-		this.setTextColor(0x00000000);
 		for(Shadow shadow : outerShadows){
 			this.setShadowLayer(shadow.r, shadow.dx, shadow.dy, shadow.color);
 			super.onDraw(canvas);
