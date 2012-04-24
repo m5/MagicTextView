@@ -158,11 +158,9 @@ public class MagicTextView extends TextView {
 		Drawable restoreBackground = this.getBackground();
 		Drawable[] restoreDrawables = this.getCompoundDrawables();
 		int restoreColor = this.getCurrentTextColor();
-
+		
 		this.setCompoundDrawables(null,  null, null, null);
 
-
-		
 		for(Shadow shadow : outerShadows){
 			this.setShadowLayer(shadow.r, shadow.dx, shadow.dy, shadow.color);
 			super.onDraw(canvas);
@@ -221,6 +219,7 @@ public class MagicTextView extends TextView {
 			tempBitmap.recycle();
 		}
 		tempBitmap = null;
+
 		unfreeze();
 	}
 	
@@ -246,10 +245,21 @@ public class MagicTextView extends TextView {
 		frozen = false;
 	}
 	
+    
+    @Override
+    public void requestLayout(){
+        if(!frozen) super.requestLayout();
+    }
+	
 	@Override
 	public void postInvalidate(){
 		if(!frozen) super.postInvalidate();
 	}
+	
+   @Override
+    public void postInvalidate(int left, int top, int right, int bottom){
+        if(!frozen) super.postInvalidate(left, top, right, bottom);
+    }
 	
 	@Override
 	public void invalidate(){
