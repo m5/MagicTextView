@@ -1,10 +1,12 @@
 package com.qwerjk.better_text;
 
 import java.util.ArrayList;
+import java.util.WeakHashMap;
 
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
+import android.graphics.BlurMaskFilter;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -19,16 +21,19 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.text.TextPaint;
 import android.util.AttributeSet;
+import android.util.Log;
+import android.util.Pair;
 import android.widget.TextView;
 
 public class MagicTextView extends TextView {
 	private ArrayList<Shadow> outerShadows;
 	private ArrayList<Shadow> innerShadows;
 	
+	private WeakHashMap<String, Pair<Canvas, Bitmap>> canvasStore;
+	
 	private Canvas tempCanvas;
 	private Bitmap tempBitmap;
 	
-
 	private Drawable foregroundDrawable;
 	
 	private float strokeWidth;
@@ -55,6 +60,9 @@ public class MagicTextView extends TextView {
 	public void init(AttributeSet attrs){
 		outerShadows = new ArrayList<Shadow>();
 		innerShadows = new ArrayList<Shadow>();
+		if(canvasStore == null){
+		    canvasStore = new WeakHashMap<String, Pair<Canvas, Bitmap>>();
+		}
 	
 		if(attrs != null){
 			TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.MagicTextView);
@@ -196,13 +204,19 @@ public class MagicTextView extends TextView {
 			for(Shadow shadow : innerShadows){
 				this.setTextColor(shadow.color);
 				super.onDraw(tempCanvas);
-				this.setTextColor(0x00000000);
-				this.setShadowLayer(shadow.r, shadow.dx, shadow.dy, shadow.color);
+				this.setTextColor(0xFF000000);
 				paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_OUT));
+				paint.setMaskFilter(new BlurMaskFilter(shadow.r, BlurMaskFilter.Blur.NORMAL));
+				
+                tempCanvas.save();
+                tempCanvas.translate(shadow.dx, shadow.dy);
 				super.onDraw(tempCanvas);
+				tempCanvas.restore();
 				canvas.drawBitmap(tempBitmap, 0, 0, null);
 				tempCanvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
+				
 				paint.setXfermode(null);
+				paint.setMaskFilter(null);
 				this.setTextColor(restoreColor);
 				this.setShadowLayer(0,0,0,0);
 			}
@@ -214,19 +228,22 @@ public class MagicTextView extends TextView {
 		}
 		this.setBackgroundDrawable(restoreBackground);
 		this.setTextColor(restoreColor);
-		tempCanvas = null;
-		if(tempBitmap != null){
-			tempBitmap.recycle();
-		}
-		tempBitmap = null;
 
 		unfreeze();
 	}
 	
 	private void generateTempCanvas(){
-		tempCanvas = new Canvas();
-		tempBitmap = Bitmap.createBitmap(getWidth(), getHeight(), Bitmap.Config.ARGB_8888);
-		tempCanvas.setBitmap(tempBitmap);
+	    String key = String.format("%dx%d", getWidth(), getHeight());
+	    Pair<Canvas, Bitmap> stored = canvasStore.get(key);
+	    if(stored != null){
+	        tempCanvas = stored.first;
+	        tempBitmap = stored.second;
+	    }else{
+            tempCanvas = new Canvas();
+            tempBitmap = Bitmap.createBitmap(getWidth(), getHeight(), Bitmap.Config.ARGB_8888);
+            tempCanvas.setBitmap(tempBitmap);
+            canvasStore.put(key, new Pair<Canvas, Bitmap>(tempCanvas, tempBitmap));
+	    }
 	}
 
 	
