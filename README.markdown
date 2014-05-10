@@ -15,11 +15,35 @@ If anybody figures out how to do text paths, please let me know!
 Installation
 ===
 
+Eclipse
+==
+
 If you like you can import the project into eclipse, and use it as a library project
 [This is a decent tutorial on using library projects](http://www.vogella.com/blog/2011/03/03/android-library-projects/)
 
 Realistically, just copy MagicTextView.java & attrs.xml into your project and use them as your own.
 
+Android Studio
+==
+
+For using it with Android Studio:
+
+ * Add the folder into your project
+ * Edit build.gradle and change apply plugin: 'android' into apply plugin: 'android-library'
+ * Remove activity tag in AndroidManifest.xml
+ * Add ':MagicTextView' in the includes of the settings.xml of your project
+ * Add compile project(':MagicTextView') in the dependencies section of the module in which you want to use the library
+ * Use it in this module
+
+You're done !
+
+If you use it as a library into Android Studio, replace in your XML layout:
+
+    xmlns:qwerjk="http://schemas.android.com/apk/res/com.qwerjk.better_text"
+	
+By:
+
+    xmlns:qwerjk="http://schemas.android.com/apk/res-auto"
 
 Usage
 ===
