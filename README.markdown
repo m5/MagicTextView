@@ -35,7 +35,7 @@ From Xml:
         android:drawableLeft="@android:drawable/btn_star"
         android:textStyle="bold"
         android:padding="10dp"
-        qwerjk:foreground="@drawable/fake_luxury_tiled"
+        qwerjk:mtv_foreground="@drawable/fake_luxury_tiled"
         qwerjk:innerShadowDy="2"
         qwerjk:innerShadowColor="#FF000000"
         qwerjk:innerShadowRadius="1"
