@@ -19,10 +19,12 @@ import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.text.TextPaint;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.util.Pair;
+import android.view.View;
 import android.widget.TextView;
 
 public class MagicTextView extends TextView {
@@ -74,7 +76,7 @@ public class MagicTextView extends TextView {
             }
             
 			if(a.hasValue(R.styleable.MagicTextView_foreground)){
-				Drawable foreground = a.getDrawable(R.styleable.MagicTextView_foreground);	
+				Drawable foreground = a.getDrawable(R.styleable.MagicTextView_foreground);
 				if(foreground != null){
 					this.setForegroundDrawable(foreground);
 				}else{
@@ -92,23 +94,23 @@ public class MagicTextView extends TextView {
 			}
 			
 			if(a.hasValue(R.styleable.MagicTextView_innerShadowColor)){
-				this.addInnerShadow(a.getFloat(R.styleable.MagicTextView_innerShadowRadius, 0), 
-									a.getFloat(R.styleable.MagicTextView_innerShadowDx, 0), 
-									a.getFloat(R.styleable.MagicTextView_innerShadowDy, 0),
+				this.addInnerShadow(a.getDimensionPixelSize(R.styleable.MagicTextView_innerShadowRadius, 0),
+									a.getDimensionPixelOffset(R.styleable.MagicTextView_innerShadowDx, 0),
+									a.getDimensionPixelOffset(R.styleable.MagicTextView_innerShadowDy, 0),
 									a.getColor(R.styleable.MagicTextView_innerShadowColor, 0xff000000));
 			}
 			
 			if(a.hasValue(R.styleable.MagicTextView_outerShadowColor)){
-				this.addOuterShadow(a.getFloat(R.styleable.MagicTextView_outerShadowRadius, 0), 
-									a.getFloat(R.styleable.MagicTextView_outerShadowDx, 0), 
-									a.getFloat(R.styleable.MagicTextView_outerShadowDy, 0),
+				this.addOuterShadow(a.getDimensionPixelSize(R.styleable.MagicTextView_outerShadowRadius, 0),
+									a.getDimensionPixelOffset(R.styleable.MagicTextView_outerShadowDx, 0),
+									a.getDimensionPixelOffset(R.styleable.MagicTextView_outerShadowDy, 0),
 									a.getColor(R.styleable.MagicTextView_outerShadowColor, 0xff000000));
 			}
 			
 			if(a.hasValue(R.styleable.MagicTextView_strokeColor)){
-				float strokeWidth = a.getFloat(R.styleable.MagicTextView_strokeWidth, 1);
+				float strokeWidth = a.getDimensionPixelSize(R.styleable.MagicTextView_strokeWidth, 1);
 				int strokeColor = a.getColor(R.styleable.MagicTextView_strokeColor, 0xff000000);
-				float strokeMiter = a.getFloat(R.styleable.MagicTextView_strokeMiter, 10);
+				float strokeMiter = a.getDimensionPixelSize(R.styleable.MagicTextView_strokeMiter, 10);
 				Join strokeJoin = null;
 				switch(a.getInt(R.styleable.MagicTextView_strokeJoinStyle, 0)){
 				case(0): strokeJoin = Join.MITER; break;

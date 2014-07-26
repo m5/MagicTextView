@@ -16,15 +16,15 @@
         android:textStyle="bold"
         android:padding="10dp"
         qwerjk:foreground="@drawable/fake_luxury_tiled"
-        qwerjk:innerShadowDy="2"
+        qwerjk:innerShadowDy="2dp"
         qwerjk:innerShadowColor="#FF000000"
-        qwerjk:innerShadowRadius="1"
-        qwerjk:outerShadowDy="3"
+        qwerjk:innerShadowRadius="1dp"
+        qwerjk:outerShadowDy="3dp"
         qwerjk:outerShadowColor="#FF0088ff"
-        qwerjk:outerShadowRadius="10"
+        qwerjk:outerShadowRadius="10dp"
         qwerjk:strokeColor="#FFff0000"
         qwerjk:strokeJoinStyle="miter"
-        qwerjk:strokeWidth="5"
+        qwerjk:strokeWidth="5dp"
         android:text="Magic" />
 
 </LinearLayout>
