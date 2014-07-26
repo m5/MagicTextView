@@ -13,8 +13,8 @@
 		
 		<attr name="typeface" format="string" />
 		
-		<attr name="foreground" format="reference|color"/>
-		<attr name="background" format="reference|color"/>
+		<attr name="mtv_foreground" format="reference|color"/>
+		<attr name="mtv_background" format="reference|color"/>
 		
 		<attr name="strokeWidth" format="float" />
 		<attr name="strokeMiter" format="float" />
