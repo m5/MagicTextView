@@ -1,8 +1,5 @@
 package com.qwerjk.better_text;
 
-import java.util.ArrayList;
-import java.util.WeakHashMap;
-
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
@@ -22,10 +19,12 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.text.TextPaint;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.util.Pair;
 import android.view.View;
 import android.widget.TextView;
+
+import java.util.ArrayList;
+import java.util.WeakHashMap;
 
 public class MagicTextView extends TextView {
 	private ArrayList<Shadow> outerShadows;
@@ -75,8 +74,8 @@ public class MagicTextView extends TextView {
                 setTypeface(tf);
             }
             
-			if(a.hasValue(R.styleable.MagicTextView_foreground)){
-				Drawable foreground = a.getDrawable(R.styleable.MagicTextView_foreground);
+			if(a.hasValue(R.styleable.MagicTextView_mtv_foreground)){
+				Drawable foreground = a.getDrawable(R.styleable.MagicTextView_mtv_foreground);
 				if(foreground != null){
 					this.setForegroundDrawable(foreground);
 				}else{
