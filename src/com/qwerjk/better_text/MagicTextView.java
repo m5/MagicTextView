@@ -80,16 +80,16 @@ public class MagicTextView extends TextView {
 				if(foreground != null){
 					this.setForegroundDrawable(foreground);
 				}else{
-					this.setTextColor(a.getColor(R.styleable.MagicTextView_foreground, 0xff000000));
+					this.setTextColor(a.getColor(R.styleable.MagicTextView_mtv_foreground, 0xff000000));
 				}
 			}
 		
-			if(a.hasValue(R.styleable.MagicTextView_background)){
-				Drawable background = a.getDrawable(R.styleable.MagicTextView_background);
+			if(a.hasValue(R.styleable.MagicTextView_mtv_background)){
+				Drawable background = a.getDrawable(R.styleable.MagicTextView_mtv_background);
 				if(background != null){
 					this.setBackgroundDrawable(background);
 				}else{
-					this.setBackgroundColor(a.getColor(R.styleable.MagicTextView_background, 0xff000000));
+					this.setBackgroundColor(a.getColor(R.styleable.MagicTextView_mtv_background, 0xff000000));
 				}
 			}
 			
