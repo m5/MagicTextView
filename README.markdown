@@ -11,6 +11,9 @@ Featuring:
 
 If anybody figures out how to do text paths, please let me know!
 
+Screenshot
+===
+![MagicTextView Demo](http://i.imgur.com/mN0PNKY.png)
 
 Installation
 ===
